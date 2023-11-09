@@ -13,6 +13,9 @@ class Scene:
     
     def draw_elements(self) -> None:
         self.draw_button()
+        for i in self.graphical_elements_arr:
+            i.update(self)
+            i.draw(self)
     
     def loop(self, args : list) -> None:
         if self.loop_ptr:
@@ -36,6 +39,8 @@ class Scene:
         self.background_color_rgb = (10,55,100)
         self.is_running = True
         self.name = name
+        self.graphical_elements_arr = []
+        self.graphical_elements_map = {}
     
     def add_button(self, button) -> None:
         self.button_arr.append(button)
