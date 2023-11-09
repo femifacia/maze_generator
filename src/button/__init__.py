@@ -3,3 +3,5 @@
 import sys
 
 sys.path.append("../")
+
+from .TextButton import TextButton
