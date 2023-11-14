@@ -16,6 +16,9 @@ class Scene:
         for i in self.graphical_elements_arr:
             i.update(self)
             i.draw(self)
+        if "maze" in self.graphical_elements_map:
+            self.graphical_elements_map["maze"].update(self)
+            self.graphical_elements_map["maze"].draw(self)
     
     def loop(self, args : list) -> None:
         if self.loop_ptr:

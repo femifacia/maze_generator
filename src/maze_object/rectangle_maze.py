@@ -22,7 +22,15 @@ class RectangleMaze:
             pos[0] = self.pos[0]
             pos[1] += 5
             
+    def get_str(self) -> None:
+        string = self.type + "\n"
+        for i in self.graph:
+            for j in i:
+                string += j
+            string += "\n"
+        return string
     
     def __init__(self, height = 10, width = 8, pos = (100, 300), algo="dfs_random") -> None:
         self.graph = rectangle_generate[algo](height,width)
         self.pos = pos
+        self.type="rectangle"

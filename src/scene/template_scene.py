@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 import pygame
+import pygame_gui
+from pygame_gui.windows.ui_file_dialog import UIFileDialog
+from pygame_gui.elements.ui_button import UIButton
 
 import scene
 import button
@@ -14,19 +17,67 @@ def generate_rectangle_maze_function(info : list) -> None:
     if not 'maze' in scene.graphical_elements_map:
         graph = maze_object.RectangleMaze(height,width,(10,140))
         scene.graphical_elements_map['maze'] = graph
-        scene.graphical_elements_arr.append(graph)
+#        scene.graphical_elements_arr.append(graph)
     else:
-        elm = scene.graphical_elements_map['maze']
-        scene.graphical_elements_arr.pop(scene.graphical_elements_arr.index(elm))
-        del elm
+#        elm = scene.graphical_elements_map['maze']
+#        scene.graphical_elements_arr.pop(scene.graphical_elements_arr.index(elm))
+#        del elm
         graph = maze_object.RectangleMaze(height,width,(10,140))
         scene.graphical_elements_map['maze'] = graph
-        scene.graphical_elements_arr.append(graph)
+#        scene.graphical_elements_arr.append(graph)
         
+def save_maze_function(info : list) -> None:
+    scene = info[0]
+    manager = pygame_gui.UIManager((700, 700))
+    clock = pygame.time.Clock()
+    background = pygame.Surface((700, 700))
+    background.fill(pygame.Color('#000000'))
 
+    file_selection_button = UIButton(relative_rect=pygame.Rect(150, 250, 150, 150),
+                                    manager=manager, text='Select File')
+    back_button = UIButton(relative_rect=pygame.Rect(50, 50, 150, 150),
+                                    manager=manager, text='<-')
+    is_ok = 1
+    file_selection = None
+
+    while is_ok:
+        time_delta = clock.tick(60) / 1000.0
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == back_button:
+                        is_ok = 0
+                    if event.ui_element == file_selection_button:
+                        file_selection = UIFileDialog(rect=pygame.Rect(0, 0, 300, 300), manager=manager, allow_picking_directories=True)
+
+                    if file_selection and event.ui_element == file_selection.ok_button:
+                        path = file_selection.current_file_path
+                        try:
+                            fd = open(path, 'w')
+                            string = "" if  (not "maze" in scene.graphical_elements_map or not scene.graphical_elements_map["maze"]) else scene.graphical_elements_map["maze"].get_str() 
+                            fd.write(string)
+                            fd.close()
+                            is_ok = 0
+                        except:
+                            print("Can't save your maze at", path)
+                            is_ok = 0
+
+            manager.process_events(event)
+
+        manager.update(time_delta)
+        scene.core.screen.blit(background, (0, 0))
+        manager.draw_ui(scene.core.screen)
+
+        pygame.display.update()
 def generate_rectangle_maze(core) -> scene.Scene:
     elm = scene.Scene(core, "generate_rectangle_maze")
     generate_button = button.TextButton(text_normal="      GENERATE       ", text_hover="      GENERATE       ", ptr_bound=generate_rectangle_maze_function)
+    save_button = button.TextButton(x = 250, text_normal="      SAVE       ", text_hover="      SAVE       ", ptr_bound=save_maze_function)
+    elm.add_button(save_button)
     elm.add_button(generate_button)
     elm.add_graphical_element(integer_box.IntegerBox(), "height")
     elm.add_graphical_element(integer_box.IntegerBox((80,10),legend=" width "), "width")
