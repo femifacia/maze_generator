@@ -9,15 +9,20 @@ import integer_box
 
 def generate_rectangle_maze_function(info : list) -> None:
     scene = info[0]
+    height = scene.graphical_elements_map["height"].get_val()
+    width = scene.graphical_elements_map["width"].get_val()
     if not 'maze' in scene.graphical_elements_map:
-        graph = maze_object.RectangleMaze(50,80,(10,140))
+        graph = maze_object.RectangleMaze(height,width,(10,140))
         scene.graphical_elements_map['maze'] = graph
         scene.graphical_elements_arr.append(graph)
     else:
-        del scene.graphical_elements_map['maze']
-        graph = maze_object.RectangleMaze(50,80,(10,140))
+        elm = scene.graphical_elements_map['maze']
+        scene.graphical_elements_arr.pop(scene.graphical_elements_arr.index(elm))
+        del elm
+        graph = maze_object.RectangleMaze(height,width,(10,140))
         scene.graphical_elements_map['maze'] = graph
         scene.graphical_elements_arr.append(graph)
+        
 
 def generate_rectangle_maze(core) -> scene.Scene:
     elm = scene.Scene(core, "generate_rectangle_maze")

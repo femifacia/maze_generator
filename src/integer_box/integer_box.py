@@ -2,6 +2,18 @@ import pygame
 import time
 
 class IntegerBox:
+    
+    def get_val(self) -> None:
+        try:
+            val = int(self.val)
+            assert val > self.val_min
+            if self.val_max < val:
+                self.val = str(self.val_max)
+        except:
+            self.val = str(self.val_min)
+        self.text_render = self.font.render(self.val,1,self.color_foreground_input)
+        return int(self.val)
+        
 
     def draw(self, scene) -> None:
         screen = scene.core.screen
@@ -70,5 +82,7 @@ class IntegerBox:
         self.backspace_time = time.time()
         self.backspace_delay = 0.2
         self.max_digit = 6
+        self.val_max = val_max
+        self.val_min = val_min
 #        self.text
         pass

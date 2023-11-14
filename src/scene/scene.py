@@ -33,7 +33,7 @@ class Scene:
                     i.update(self)
             self.core.screen.fill(self.background_color_rgb)
             self.draw_elements()
-#            pygame.display.flip()
+            pygame.display.flip()
             pygame.display.update()
 
     def __init__(self, core, name="empty",loop_ptr  = None) -> None:
