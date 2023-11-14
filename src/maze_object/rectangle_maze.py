@@ -16,7 +16,8 @@ class RectangleMaze:
             for j in i:
                 color = "white" if j == " " else ("red" if j == '#' else "green")
                 rect.x, rect.y = pos[0], pos[1]
-                pygame.draw.rect(scene.core.screen,color, rect, border_radius=8)
+                pygame.draw.rect(scene.core.screen,color, rect, border_radius=1)
+#                pygame.draw.rect(scene.core.screen,color, rect, border_radius=8)
                 pos[0] += 5
             pos[0] = self.pos[0]
             pos[1] += 5

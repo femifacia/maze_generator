@@ -42,5 +42,10 @@ class Scene:
         self.graphical_elements_arr = []
         self.graphical_elements_map = {}
     
+    def add_graphical_element(self, element, key=""):
+        if key:
+            self.graphical_elements_map[key]=element
+        self.graphical_elements_arr.append(element)
+    
     def add_button(self, button) -> None:
         self.button_arr.append(button)

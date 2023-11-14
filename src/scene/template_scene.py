@@ -5,6 +5,7 @@ import pygame
 import scene
 import button
 import maze_object
+import integer_box
 
 def generate_rectangle_maze_function(info : list) -> None:
     scene = info[0]
@@ -22,6 +23,8 @@ def generate_rectangle_maze(core) -> scene.Scene:
     elm = scene.Scene(core, "generate_rectangle_maze")
     generate_button = button.TextButton(text_normal="      GENERATE       ", text_hover="      GENERATE       ", ptr_bound=generate_rectangle_maze_function)
     elm.add_button(generate_button)
+    elm.add_graphical_element(integer_box.IntegerBox(), "height")
+    elm.add_graphical_element(integer_box.IntegerBox((80,10),legend=" width "), "width")
     return elm
 
 def select_type_maze_generate_scene(core) -> scene.Scene:
