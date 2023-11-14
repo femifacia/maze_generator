@@ -23,10 +23,14 @@ class Scene:
             return
         self.is_running = 1
         while self.is_running and self.core.is_running:
+            self.last_event = None
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
                     self.core.is_running = False
+                self.last_event = event
+                for i in self.graphical_elements_arr:
+                    i.update(self)
             self.core.screen.fill(self.background_color_rgb)
             self.draw_elements()
 #            pygame.display.flip()
