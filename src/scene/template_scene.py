@@ -9,6 +9,7 @@ import scene
 import button
 import maze_object
 import integer_box
+import rect_select
 
 def generate_rectangle_maze_function(info : list) -> None:
     scene = info[0]
@@ -81,6 +82,8 @@ def generate_rectangle_maze(core) -> scene.Scene:
     elm.add_button(generate_button)
     elm.add_graphical_element(integer_box.IntegerBox(), "height")
     elm.add_graphical_element(integer_box.IntegerBox((80,10),legend=" width "), "width")
+    elm.add_graphical_element(rect_select.RectSelect((390,10),legend=" space ",shift=(-10,20)), "free_rect" )
+    elm.add_graphical_element(rect_select.RectSelect((450,10),legend=" obstacle ",shift=(-10,20),color="red$green",content="#"), "obstacle_rect" )
     return elm
 
 def select_type_maze_generate_scene(core) -> scene.Scene:
