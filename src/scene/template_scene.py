@@ -11,6 +11,8 @@ import maze_object
 import integer_box
 import rect_select
 
+import caroussel
+
 def generate_rectangle_maze_function(info : list) -> None:
     scene = info[0]
     height = scene.graphical_elements_map["height"].get_val()
@@ -84,6 +86,11 @@ def generate_rectangle_maze(core) -> scene.Scene:
     elm.add_graphical_element(integer_box.IntegerBox((80,10),legend=" width "), "width")
     elm.add_graphical_element(rect_select.RectSelect((390,10),legend=" space ",shift=(-10,20)), "free_rect" )
     elm.add_graphical_element(rect_select.RectSelect((450,10),legend=" obstacle ",shift=(-10,20),color="red$green",content="#"), "obstacle_rect" )
+    car = caroussel.Caroussel()
+    car.add_title('dfs_random')
+    car.add_title('femi_random')
+    car.add_title('backtracking_random')
+    elm.add_graphical_element(car, 'caroussel')
     return elm
 
 def select_type_maze_generate_scene(core) -> scene.Scene:

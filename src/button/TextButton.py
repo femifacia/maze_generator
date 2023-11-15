@@ -4,6 +4,11 @@
 import pygame
 
 class TextButton(pygame.sprite.Sprite):
+    
+    def update_pos(self, pos) -> None:
+        self.pos = pos
+        self.rect_sprite_hover.top, self.rect_sprite_hover.left = pos[1], pos[0]
+        self.rect_sprite_normal.top, self.rect_sprite_normal.left = pos[1], pos[0]
 
     def exec_button(self, scene) -> None:
         pygame.time.delay(100)
