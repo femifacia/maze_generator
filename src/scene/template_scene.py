@@ -10,6 +10,7 @@ import button
 import maze_object
 import integer_box
 import rect_select
+import time
 
 import caroussel
 
@@ -17,16 +18,26 @@ def generate_rectangle_maze_function(info : list) -> None:
     scene = info[0]
     height = scene.graphical_elements_map["height"].get_val()
     width = scene.graphical_elements_map["width"].get_val()
-    if not 'maze' in scene.graphical_elements_map:
-        graph = maze_object.RectangleMaze(height,width,(10,140))
-        scene.graphical_elements_map['maze'] = graph
+    car = scene.graphical_elements_map["caroussel"]
+    algo = car.get_current_title()
+    clock = time.time()
+    graph = maze_object.RectangleMaze(height,width,(10,140),algo=algo)
+    clock = time.time() - clock
+    legend = "time : " + str(clock)[0:5]
+    car.add_maze_current(graph)
+    car.add_legend(algo, legend)
+    
+    
+#    if not 'maze' in scene.graphical_elements_map:
+# rhis       graph = maze_object.RectangleMaze(height,width,(10,140))
+#this        scene.graphical_elements_map['maze'] = graph
 #        scene.graphical_elements_arr.append(graph)
-    else:
+#    else:
 #        elm = scene.graphical_elements_map['maze']
 #        scene.graphical_elements_arr.pop(scene.graphical_elements_arr.index(elm))
 #        del elm
-        graph = maze_object.RectangleMaze(height,width,(10,140))
-        scene.graphical_elements_map['maze'] = graph
+# this       graph = maze_object.RectangleMaze(height,width,(10,140))
+# this        scene.graphical_elements_map['maze'] = graph
 #        scene.graphical_elements_arr.append(graph)
         
 def save_maze_function(info : list) -> None:
@@ -90,6 +101,8 @@ def generate_rectangle_maze(core) -> scene.Scene:
     car.add_title('dfs_random')
     car.add_title('femi_random')
     car.add_title('backtracking_random')
+    car.add_title('full_obtsacle')
+    car.add_title('full_space')
     elm.add_graphical_element(car, 'caroussel')
     return elm
 

@@ -16,7 +16,11 @@ class Scene:
         for i in self.graphical_elements_arr:
             i.update(self)
             i.draw(self)
-        if "maze" in self.graphical_elements_map:
+        car = self.graphical_elements_map.get("caroussel", None)
+        if not car:
+            return
+        self.graphical_elements_map["maze"] = car.get_current_maze()
+        if "maze" in self.graphical_elements_map and self.graphical_elements_map["maze"]:
             self.graphical_elements_map["maze"].update(self)
             self.graphical_elements_map["maze"].draw(self)
     

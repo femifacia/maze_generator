@@ -14,7 +14,7 @@ class RectSelect:
     
     def update(self, scene):
         pos = pygame.mouse.get_pos()
-        rect_maze = None if not "maze" in scene.graphical_elements_map else scene.graphical_elements_map["maze"].rect
+        rect_maze = None if not scene.graphical_elements_map.get('maze',None) else scene.graphical_elements_map["maze"].rect
         if self.rect.collidepoint(pos):
             self.hover = 1
             if pygame.mouse.get_pressed()[0]:

@@ -75,12 +75,17 @@ class Caroussel:
     def get_maze(self, title : str) -> str:
         return self.maze_map.get(title, None)
     
+    def get_current_maze(self) -> list:
+        return self.get_maze(self.get_current_title())
+    
     def get_current_rect_title(self) -> pygame.Rect:
         return self.rect_title_map.get(self.get_current_title(), None)
     
     def get_current_rect_legend(self) -> pygame.Rect:
         return self.rect_legend_map.get(self.get_current_title(), None)
-        
+    
+    def add_maze_current(self, maze : list) -> None:
+        self.maze_map[self.get_current_title()] = maze
     
     def __init__(self, pos = (200,10), prev_shift = (0,20), next_shift=(10,20), legend_shift=(0,25), prev_text="<-", next_text="->",
                  title_color="white$black", legend_color="white$black", font_size=16, font_path="",

@@ -1,7 +1,11 @@
 
 import maze_generation_algorythm
 
-rectangle_generate = {"dfs_random":maze_generation_algorythm.dfs_random}
+rectangle_generate = {"dfs_random":maze_generation_algorythm.dfs_random,
+                      'femi_random':maze_generation_algorythm.dfs_random,
+                      'backtracking_random':maze_generation_algorythm.dfs_random,
+                      'full_obtsacle':maze_generation_algorythm.full_obstacle,
+                      'full_space':maze_generation_algorythm.full_space}
 import pygame
 
 class RectangleMaze:
