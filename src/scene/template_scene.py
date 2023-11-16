@@ -136,8 +136,8 @@ def open_maze(info) -> None:
                             launch_solve_maze([scene,graph])
                             fd.close()
                             is_ok = 0
-                        except:
-                            print("Corrupted_maze", path)
+                        except Exception as e:
+                            print("Corrupted_maze", path, e)
                             is_ok = 0
 
             manager.process_events(event)
@@ -192,6 +192,8 @@ def solve_maze(core) -> scene.Scene:
     #elm.add_graphical_element(integer_box.IntegerBox((80,10),legend=" width "), "width")
     #elm.add_graphical_element(rect_select.RectSelect((390,10),legend=" space ",shift=(-10,20)), "free_rect" )
     #elm.add_graphical_element(rect_select.RectSelect((450,10),legend=" obstacle ",shift=(-10,20),color="red$green",content="#"), "obstacle_rect" )
+    elm.add_graphical_element(rect_select.RectSelect((450,10),legend=" start ",shift=(-10,20),color="cyan$green",content="#"), "start" )
+    elm.add_graphical_element(rect_select.RectSelect((390,10),legend=" end ",shift=(-10,20),color="pink$green",content="#"), "end" )
     car = caroussel.Caroussel()
     car.add_title('dfs')
     car.add_title('bfs')

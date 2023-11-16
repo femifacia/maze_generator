@@ -16,6 +16,13 @@ class Caroussel:
     def update(self, scene) -> None:
         self.button_next.update(scene)
         self.button_prev.update(scene)
+        current_maze = self.get_current_maze()
+        if current_maze.start:
+            for i in self.maze_map:
+                self.maze_map[i].start = current_maze.start
+        if current_maze.end:
+            for i in self.maze_map:
+                self.maze_map[i].end = current_maze.end
         
     def draw(self, scene) -> None:
         rect_title = self.get_current_rect_title()

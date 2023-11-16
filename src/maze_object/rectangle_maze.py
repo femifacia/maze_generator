@@ -26,6 +26,8 @@ class RectangleMaze:
         rect = pygame.Rect(5,5,5,5)
         free_rect = None if not "free_rect" in scene.graphical_elements_map else scene.graphical_elements_map["free_rect"] 
         obstacle_rect = None if not "obstacle_rect" in scene.graphical_elements_map else scene.graphical_elements_map["obstacle_rect"] 
+        start_rect = scene.graphical_elements_map.get("start", None)
+        end_rect = scene.graphical_elements_map.get("end", None)
         for i in range(len(self.graph)):
             for j in range(len(self.graph[i])):
                 color = "white" if self.graph[i][j] == " " else ("red" if self.graph[i][j] == '#' else "green")
@@ -37,8 +39,17 @@ class RectangleMaze:
                             self.graph[i][j] = " "
                         if obstacle_rect and obstacle_rect.selected:
                             self.graph[i][j] = "#"
+                        if start_rect and start_rect.selected:
+                            self.start = (j,i)
+                        if end_rect and end_rect.selected:
+                            self.end = (j,i)
                 else:
                     pygame.draw.rect(scene.core.screen,color, rect, border_radius=1)
+                    if end_rect and (j,i) == self.end:
+                        pygame.draw.rect(scene.core.screen,end_rect.color_normal, rect, border_radius=1)
+                    if start_rect and (j,i) == self.start:
+                        pygame.draw.rect(scene.core.screen,start_rect.color_normal, rect, border_radius=1)
+                        
 #                pygame.draw.rect(scene.core.screen,color, rect, border_radius=8)
                 pos[0] += 5
             pos[0] = self.pos[0]
@@ -71,6 +82,8 @@ class RectangleMaze:
         pass
     
     def __init__(self, height = 10, width = 8, pos = (100, 300), algo="dfs_random", color_hover="yellow",cell_size=(5,5),file=None, is_dup=0) -> None:
+        self.start = None
+        self.end = None
         if file:
             self.init_from_file(file)
             return
