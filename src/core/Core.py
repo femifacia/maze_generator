@@ -6,6 +6,8 @@ import scene
 class Core:
     
     def init_scene(self) -> None:
+        """To init scene needed
+        """
         self.add_scene(scene.main_scene(self))
         self.add_scene(scene.quit_scene(self))
         self.add_scene(scene.select_type_maze_generate_scene(self))
@@ -14,6 +16,8 @@ class Core:
         self.add_scene(scene.error_scene(self))
 
     def init_screen(self) -> None:
+        """We init our pygame screen object
+        """
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
         
     def add_scene(self, scene_to_add : Scene) -> None:
