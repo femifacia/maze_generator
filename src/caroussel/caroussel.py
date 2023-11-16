@@ -17,6 +17,8 @@ class Caroussel:
         self.button_next.update(scene)
         self.button_prev.update(scene)
         current_maze = self.get_current_maze()
+        if not current_maze:
+            return
         if current_maze.start:
             for i in self.maze_map:
                 self.maze_map[i].start = current_maze.start
