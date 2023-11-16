@@ -11,6 +11,7 @@ import maze_object
 import integer_box
 import rect_select
 import time
+import text
 
 import caroussel
 
@@ -23,7 +24,19 @@ def launch_solve_maze(info : list) -> None:
     car = solve_maze_scene.graphical_elements_map["caroussel"]
     car.reset_maze(maze)
     solve_maze_scene.loop([])
-    
+
+def solve_maze_function(info : list) -> None:
+    scene = info[0]
+    car = scene.graphical_elements_map["caroussel"]
+    algo = car.get_current_title()
+    maze = car.get_current_maze()
+    if not maze.start or not maze.end:
+        return
+    clock = time.time()
+    maze.solve(algo)
+    clock = time.time() - clock
+    legend = "time : " + str(clock)[0:5]
+    car.add_legend(algo, legend)    
 
 def generate_rectangle_maze_function(info : list) -> None:
     scene = info[0]
@@ -89,6 +102,7 @@ def save_maze_function(info : list) -> None:
                             is_ok = 0
                         except:
                             print("Can't save your maze at", path)
+                            scene.call_other_scene("error")
                             is_ok = 0
 
             manager.process_events(event)
@@ -138,6 +152,7 @@ def open_maze(info) -> None:
                             is_ok = 0
                         except Exception as e:
                             print("Corrupted_maze", path, e)
+                            scene.call_other_scene("error")
                             is_ok = 0
 
             manager.process_events(event)
@@ -181,7 +196,7 @@ def solve_maze(core) -> scene.Scene:
     elm = scene.Scene(core, "solve_maze")
     #generate_button = button.TextButton(x=110,text_normal="      GENERATE       ", text_hover="      GENERATE       ", ptr_bound=generate_rectangle_maze_function)
     #save_button = button.TextButton(x = 250, text_normal="      SAVE       ", text_hover="      SAVE       ", ptr_bound=save_maze_function)
-    solve_button = button.TextButton(text_normal="      SOLVE      ", text_hover="      SOLVE      ",x=350)
+    solve_button = button.TextButton(text_normal="      SOLVE      ", text_hover="      SOLVE      ",x=350,ptr_bound=solve_maze_function)
     home_button = button.TextButton(text_normal="      HOME      ", text_hover="      HOME      ",x=10, scene_name_bound="main")
     
     #elm.add_button(save_button)
@@ -215,6 +230,16 @@ def main_scene(core) -> scene.Scene:
     elm.add_button(quit_button)
     elm.add_button(generate_button)
     elm.add_button(solve_button)
+    return elm
+
+def error_scene(core) -> scene.Scene:
+    elm = scene.Scene(core,'error')
+    yes_button = button.TextButton(50,text_normal="      HOME       ", text_hover="      HOME       ",scene_name_bound="main")
+    non_button = button.TextButton(150,text_normal="      BACK       ", text_hover="      BACK       ", ptr_bound=back_function)
+    elm.add_button(yes_button)
+    elm.add_button(non_button)
+    elm.add_graphical_element(text.Text(text="OUPS!!!! You made a mistake. Look at the maze you're handling"))
+    
     return elm
 
 def quit_scene(core) -> scene.Scene:

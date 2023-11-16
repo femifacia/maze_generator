@@ -1,20 +1,36 @@
 
 import maze_generation_algorythm
+import maze_solve_algorithm
+import text
 
 rectangle_generate = {"dfs_random":maze_generation_algorythm.dfs_random,
                       'femi_random':maze_generation_algorythm.dfs_random,
                       'backtracking_random':maze_generation_algorythm.dfs_random,
                       'full_obtsacle':maze_generation_algorythm.full_obstacle,
                       'full_space':maze_generation_algorythm.full_space}
+
+rectangle_solve = {"bfs" : maze_solve_algorithm.bfs,
+                   "dfs" : maze_solve_algorithm.dfs}
 import pygame
 
 class RectangleMaze:
     
+    def solve(self, algo : str) -> None:
+        self.graph = []
+        for i in self.graph_origin:
+            self.graph.append(i[:])
+        self.size_path, self.iter =  rectangle_solve[algo](self.graph, self.start, self.end)
+        
+    
     def dup(self):
+        #essaye de mettre le is_dup a 1
         elm = RectangleMaze(height=self.height, width=self.width, pos=self.pos,cell_size=self.cell_size)
         elm.graph = []
         for i in self.graph:
             elm.graph.append(i[:])
+        elm.graph_origin = []
+        for i in self.graph:
+            elm.graph_origin.append(i[:])
         return elm
     
     def update(self, screen) -> None:
@@ -31,6 +47,10 @@ class RectangleMaze:
         for i in range(len(self.graph)):
             for j in range(len(self.graph[i])):
                 color = "white" if self.graph[i][j] == " " else ("red" if self.graph[i][j] == '#' else "green")
+                if self.graph[i][j] == "0":
+                    color = 'green'
+                if self.graph[i][j] == "x":
+                    color = 'violet'
                 rect.x, rect.y = pos[0], pos[1]
                 if rect.collidepoint(mouse_pos):
                     pygame.draw.rect(scene.core.screen,self.color_hover, rect, border_radius=1)
@@ -54,7 +74,14 @@ class RectangleMaze:
                 pos[0] += 5
             pos[0] = self.pos[0]
             pos[1] += 5
-            
+        if self.size_path != -1:
+            string = " Size Path found : " + str(self.size_path) 
+            textt = text.Text(text=string) 
+            textt.draw(scene)
+        if self.iter != -1:
+            string = " Nbr iterations : " + str(self.iter) 
+            textt = text.Text(pos=(10,25),text=string) 
+            textt.draw(scene)
     def get_str(self) -> None:
         string = self.type + "\n"
         for i in self.graph:
@@ -65,6 +92,7 @@ class RectangleMaze:
     
     def init_from_file(self,lines : list,color_hover="yellow",cell_size=(5,5)):
         lines = lines[1:]
+        self.size_path = -1
         self.graph = []
         for i in lines:
             tmp = list(i)
@@ -72,17 +100,24 @@ class RectangleMaze:
             self.graph.append(tmp)
         if self.graph == []:
             self.graph = [[]]
+        self.graph_origin = []
+        for i in self.graph:
+            self.graph_origin.append(i[:])
+        if self.graph_origin == []:
+            self.graph_origin = [[]]
         self.height = len(self.graph)
         self.width = len(self.graph[0])
-        self.pos = (100, 300)
+        self.pos = (10, 140)
         self.type="rectangle"
         self.color_hover = color_hover
         self.cell_size = cell_size
         self.rect = pygame.Rect(self.pos, (cell_size[0] * self.width, cell_size[1] * self.height))
         pass
     
-    def __init__(self, height = 10, width = 8, pos = (100, 300), algo="dfs_random", color_hover="yellow",cell_size=(5,5),file=None, is_dup=0) -> None:
+    def __init__(self, height = 10, width = 8, pos = (10, 140), algo="dfs_random", color_hover="yellow",cell_size=(5,5),file=None, is_dup=0) -> None:
         self.start = None
+        self.size_path = -1
+        self.iter = -1
         self.end = None
         if file:
             self.init_from_file(file)
@@ -90,6 +125,9 @@ class RectangleMaze:
         self.graph = None
         if not is_dup:
             self.graph = rectangle_generate[algo](height,width)
+            self.graph_origin = []
+            for i in self.graph:
+                self.graph_origin.append(i[:])
         self.pos = pos
         self.type="rectangle"
         self.color_hover = color_hover
