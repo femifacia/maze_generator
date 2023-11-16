@@ -10,6 +10,7 @@ class Core:
         self.add_scene(scene.quit_scene(self))
         self.add_scene(scene.select_type_maze_generate_scene(self))
         self.add_scene(scene.generate_rectangle_maze(self))
+        self.add_scene(scene.solve_maze(self))
 
     def init_screen(self) -> None:
         self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])

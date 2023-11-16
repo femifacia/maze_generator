@@ -6,6 +6,9 @@ class Scene:
     
     def call_other_scene(self, name : str) -> None:
         self.core.scene_map[name].loop(None)
+    
+    def get_scene(self, name : str):
+        return self.core.scene_map[name]
     def draw_button(self) -> None:
         for button in self.button_arr:
             button.update(self)

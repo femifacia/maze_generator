@@ -10,6 +10,13 @@ import pygame
 
 class RectangleMaze:
     
+    def dup(self):
+        elm = RectangleMaze(height=self.height, width=self.width, pos=self.pos,cell_size=self.cell_size)
+        elm.graph = []
+        for i in self.graph:
+            elm.graph.append(i[:])
+        return elm
+    
     def update(self, screen) -> None:
         pass
     
@@ -45,10 +52,35 @@ class RectangleMaze:
             string += "\n"
         return string
     
-    def __init__(self, height = 10, width = 8, pos = (100, 300), algo="dfs_random", color_hover="yellow",cell_size=(5,5)) -> None:
-        self.graph = rectangle_generate[algo](height,width)
+    def init_from_file(self,lines : list,color_hover="yellow",cell_size=(5,5)):
+        lines = lines[1:]
+        self.graph = []
+        for i in lines:
+            tmp = list(i)
+            tmp = tmp[:-1] if tmp[-1] == "\n" else tmp
+            self.graph.append(tmp)
+        if self.graph == []:
+            self.graph = [[]]
+        self.height = len(self.graph)
+        self.width = len(self.graph[0])
+        self.pos = (100, 300)
+        self.type="rectangle"
+        self.color_hover = color_hover
+        self.cell_size = cell_size
+        self.rect = pygame.Rect(self.pos, (cell_size[0] * self.width, cell_size[1] * self.height))
+        pass
+    
+    def __init__(self, height = 10, width = 8, pos = (100, 300), algo="dfs_random", color_hover="yellow",cell_size=(5,5),file=None, is_dup=0) -> None:
+        if file:
+            self.init_from_file(file)
+            return
+        self.graph = None
+        if not is_dup:
+            self.graph = rectangle_generate[algo](height,width)
         self.pos = pos
         self.type="rectangle"
         self.color_hover = color_hover
         self.cell_size = cell_size
         self.rect = pygame.Rect(pos, (cell_size[0] * width, cell_size[1] * height))
+        self.height = height
+        self.width = width

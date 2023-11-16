@@ -87,6 +87,10 @@ class Caroussel:
     def add_maze_current(self, maze : list) -> None:
         self.maze_map[self.get_current_title()] = maze
     
+    def reset_maze(self, maze) -> None:
+        for i in self.arr:
+            self.maze_map[i] = maze.dup()
+    
     def __init__(self, pos = (200,10), prev_shift = (0,20), next_shift=(10,20), legend_shift=(0,25), prev_text="<-", next_text="->",
                  title_color="white$black", legend_color="white$black", font_size=16, font_path="",
                  font_system="Arial", color_next_prev="black$cyan", radius_title=8, radius_legend=8,
